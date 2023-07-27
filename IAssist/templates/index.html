@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #b0e0e6;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #add8e6;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 500px;
+            padding: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #add8e6;
+            border: none;
+            color: #000000;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .answer {
+            background-color: gray;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        /* Mobile-friendly styles */
+        @media screen and (max-width: 600px) {
+            .container {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Personal Assistant</h1>
+        <form method="post">
+            <input type="text" name="query" id="query" placeholder="Ask a question...">
+            <input type="submit" value="Ask">
+        </form>
+        <button onclick="startSpeechRecognition()">Speak</button>
+        <div class="answer">
+            {% if answer %}
+                <strong>Answer from {{ source }}:</strong>
+                <p>{{ answer }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Function to start speech recognition
+        function startSpeechRecognition() {
+            var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+            recognition.lang = "en-US";
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                var query = event.results[0][0].transcript;
+                document.getElementById("query").value = query;
+            };
+        }
+    </script>
+</body>
+</html>
